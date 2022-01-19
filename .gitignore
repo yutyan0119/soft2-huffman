@@ -1,0 +1,9 @@
+*
+!*/
+!*.*
+*.dat
+*.o
+*.out
+*.a
+!Makefile
+textfile.txt
