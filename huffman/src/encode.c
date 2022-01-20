@@ -3,6 +3,7 @@
 #include <limits.h>
 #include <stdio.h>
 #include <stdlib.h>
+#include <string.h>
 
 #define NSYMBOLS 256
 
@@ -112,13 +113,22 @@ static Node *build_tree(void) {
 // 深さ優先で木を走査する
 // 現状は何もしていない（再帰してたどっているだけ）
 void traverse_tree(const int depth, const Node *np) {
-  if (np == NULL || np->left == NULL) {
-    printf("%c,count = %d\n", np->symbol, np->count);
+  static char code[NSYMBOLS] = "";
+  if (np->left == NULL && np->right == NULL) {
+    if (np->symbol == '\n') {
+      printf("\\n,count = %d, code = %s\n", np->count,code);
+      code[strlen(code)-1] = '\0';
+    } else {
+      printf("%c,count = %d, code = %s\n", np->symbol, np->count, code);
+      code[strlen(code)-1] = '\0';
+    }
     return;
   }
-
+  code[strlen(code)] = '0';
   traverse_tree(depth + 1, np->left);
+  code[strlen(code)] = '1';
   traverse_tree(depth + 1, np->right);
+  code[strlen(code)-1] = '\0';
 }
 
 // この関数は外部 (main) で使用される (staticがついていない)
@@ -130,6 +140,6 @@ Node *encode(const char *filename) {
   if (root == NULL) {
     fprintf(stderr, "A tree has not been constructed.\n");
   }
-  traverse_tree(0, root);
+  // traverse_tree(0, root);
   return root;
 }
