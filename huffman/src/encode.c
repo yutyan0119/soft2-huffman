@@ -116,19 +116,28 @@ void traverse_tree(const int depth, const Node *np) {
   static char code[NSYMBOLS] = "";
   if (np->left == NULL && np->right == NULL) {
     if (np->symbol == '\n') {
-      printf("\\n,count = %d, code = %s\n", np->count,code);
-      code[strlen(code)-1] = '\0';
+      printf("\'\\n\':%s: %d\n", code, np->count);
+      code[strlen(code) - 1] = '\0';
     } else {
-      printf("%c,count = %d, code = %s\n", np->symbol, np->count, code);
-      code[strlen(code)-1] = '\0';
+      printf("\'%c\': %s: %d\n", np->symbol, code, np->count);
+      code[strlen(code) - 1] = '\0';
     }
     return;
   }
   code[strlen(code)] = '0';
+  printf("+--0--");
   traverse_tree(depth + 1, np->left);
   code[strlen(code)] = '1';
+  for (int i = 0; i < strlen(code) && i < depth; i++) {
+    if (code[i] == '0') {
+      printf("|     ");
+    } else {
+      printf("      ");
+    }
+  }
+  printf("+--1--");
   traverse_tree(depth + 1, np->right);
-  code[strlen(code)-1] = '\0';
+  code[strlen(code) - 1] = '\0';
 }
 
 // この関数は外部 (main) で使用される (staticがついていない)
