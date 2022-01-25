@@ -7,3 +7,4 @@
 *.a
 !Makefile
 textfile.txt
+*.zip
